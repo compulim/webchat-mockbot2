@@ -67,6 +67,8 @@ jobs:
           package: zipdeploy.zip
 
       - name: Ping deployment
+        # We need to sleep because Azure Web Apps need time to pick up changes
         run: |
+          sleep 5
           curl -s ${{ steps.deploy.outputs.webapp-url }}/health.txt
           curl -s ${{ steps.deploy.outputs.webapp-url }}/ready.txt
