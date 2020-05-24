@@ -33,7 +33,7 @@ jobs:
           mv node_modules package
           cd package
           ls -la
-          zip -r ../zipdeploy.zip .
+          zip -1rq ../zipdeploy.zip .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
