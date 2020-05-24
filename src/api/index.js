@@ -7,6 +7,7 @@ import postDirectLineToken from './directLine/token/post';
 import postMessages from './messages/post';
 import postSpeechServicesToken from './speechServices/token/post';
 import postTokenDirectLine from './token/directLine/post';
+import postTokenDirectLineASE from './token/directLineASE/post';
 import postTokenSpeechServices from './token/speechServices/post';
 import upgrade from './upgrade';
 
@@ -22,6 +23,7 @@ export default async function index(server, options) {
       postMessages,
       postSpeechServicesToken,
       postTokenDirectLine,
+      postTokenDirectLineASE,
       postTokenSpeechServices,
       upgrade
     ].map(handler => handler(server, options))

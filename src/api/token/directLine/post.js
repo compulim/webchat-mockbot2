@@ -11,7 +11,7 @@ export default function postTokenDirectLine(server, { env: { DIRECT_LINE_SECRET:
     const origin = req.header('origin');
 
     if (!trustedOrigin(origin)) {
-      return res.send(403, 'not trusted origin', { 'Access-Control-Allow-Origin': origin });
+      return res.send(403, 'not trusted origin', { 'Access-Control-Allow-Origin': '*' });
     }
 
     const { token } = req.query;
@@ -36,10 +36,10 @@ export default function postTokenDirectLine(server, { env: { DIRECT_LINE_SECRET:
           null,
           2
         ),
-        { 'Access-Control-Allow-Origin': origin, 'Content-Type': 'application/json' }
+        { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }
       );
     } catch (err) {
-      res.send(500, err.message, { 'Access-Control-Allow-Origin': origin });
+      res.send(500, err.message, { 'Access-Control-Allow-Origin': '*' });
     }
 
     if (token) {
