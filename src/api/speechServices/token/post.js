@@ -1,57 +1,7 @@
-import fetch from 'node-fetch';
+// curl -L -X POST http://localhost:3978/api/speechservices/token
 
-import trustedOrigin from '../../../trustedOrigin';
-
-export default async function postSpeechServicesToken(
-  server,
-  { env: { SPEECH_SERVICES_REGION, SPEECH_SERVICES_SUBSCRIPTION_KEY } }
-) {
-  server.post('/speechservices/token', async (req, res) => {
-    if (!SPEECH_SERVICES_REGION || !SPEECH_SERVICES_SUBSCRIPTION_KEY) {
-      return res.send(403, 'Cognitive Services Speech Services authorization token is unavailable.');
-    }
-
-    console.log(
-      `Requesting Speech Services authorization token using subscription key "${SPEECH_SERVICES_SUBSCRIPTION_KEY.substr(
-        0,
-        3
-      )}...${SPEECH_SERVICES_SUBSCRIPTION_KEY.substr(-3)}" for ${origin}`
-    );
-
-    const origin = req.header('origin');
-
-    if (!trustedOrigin(origin)) {
-      return res.send(403, 'not trusted origin');
-    }
-
-    const tokenRes = await fetch(`https://${SPEECH_SERVICES_REGION}.api.cognitive.microsoft.com/sts/v1.0/issueToken`, {
-      headers: { 'Ocp-Apim-Subscription-Key': SPEECH_SERVICES_SUBSCRIPTION_KEY },
-      method: 'POST'
-    });
-
-    if (!tokenRes.ok) {
-      return res.send(500, {
-        'Access-Control-Allow-Origin': '*'
-      });
-    }
-
-    const authorizationToken = await tokenRes.text();
-
-    res.sendRaw(
-      JSON.stringify(
-        {
-          authorizationToken,
-          human: '"token" is being deprecated, use "authorizationToken" instead.',
-          region: SPEECH_SERVICES_REGION,
-          token: authorizationToken
-        },
-        null,
-        2
-      ),
-      {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json'
-      }
-    );
+export default function postSpeechServicesToken(server) {
+  server.post('/api/speechservices/token', async (_, res) => {
+    res.send(308, '', { location: '/api/tokens/speechservices' });
   });
 }
