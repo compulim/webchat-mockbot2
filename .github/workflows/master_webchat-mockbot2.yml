@@ -48,9 +48,15 @@ jobs:
           path: zipdeploy.zip
 
       - name: 'Deploy to Azure Web App'
+        id: deploy
         uses: azure/webapps-deploy@v1
         with:
           app-name: 'webchat-mockbot2'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_774a167ab81e4bafb6507401dfdc8b26 }}
           package: zipdeploy.zip
+
+      - name: 'Ping deployment'
+        run: |
+          curl ${{ steps.deploy.outputs.webapp-url }}/health.txt
+          curl ${{ steps.deploy.outputs.webapp-url }}/ready.txt
