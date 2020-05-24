@@ -5,8 +5,6 @@
   "author": "William Wong <compulim@hotmail.com>",
   "license": "MIT",
   "files": [
-    ".deployment",
-    "deploy.cmd",
     "iisnode.yml",
     "lib/**/*",
     "web.config"

@@ -29,7 +29,8 @@ jobs:
       - name: Repack
         run: |
           npm pack
-          tar xvf botframework-webchat2-0.0.0-0.tgz
+          tar xvf *.tgz
+          mv node_modules package
           cd package
 
       - name: Upload artifact
