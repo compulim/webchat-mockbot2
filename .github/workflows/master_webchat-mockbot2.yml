@@ -32,6 +32,7 @@ jobs:
           tar xvf *.tgz
           mv node_modules package
           cd package
+          ls -la
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
