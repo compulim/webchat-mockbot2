@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -47,16 +47,32 @@ jobs:
           name: package
           path: zipdeploy.zip
 
-      - name: 'Deploy to Azure Web App'
-        id: deploy
-        uses: azure/webapps-deploy@v1
-        with:
-          app-name: 'webchat-mockbot2'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_774a167ab81e4bafb6507401dfdc8b26 }}
-          package: zipdeploy.zip
+  deploy:
+    runs-on: ubuntu-latest
+    need: build
 
-      - name: 'Ping deployment'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: package
+
+      - name: Unzip artifact
         run: |
-          curl -s ${{ steps.deploy.outputs.webapp-url }}/health.txt
-          curl -s ${{ steps.deploy.outputs.webapp-url }}/ready.txt
+          unzip zipdeploy.zip
+          rm zipdeploy.zip
+          ls -la
+
+      # - name: 'Deploy to Azure Web App'
+      #   id: deploy
+      #   uses: azure/webapps-deploy@v1
+      #   with:
+      #     app-name: 'webchat-mockbot2'
+      #     slot-name: 'production'
+      #     publish-profile: ${{ secrets.AzureAppService_PublishProfile_774a167ab81e4bafb6507401dfdc8b26 }}
+      #     package: zipdeploy.zip
+
+      # - name: 'Ping deployment'
+      #   run: |
+      #     curl -s ${{ steps.deploy.outputs.webapp-url }}/health.txt
+      #     curl -s ${{ steps.deploy.outputs.webapp-url }}/ready.txt
