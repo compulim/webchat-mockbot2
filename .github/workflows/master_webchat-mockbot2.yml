@@ -31,8 +31,8 @@ jobs:
           npm pack
           tar xvf *.tgz
           mv node_modules package
-          cd package
-          ls -la
+          ls -la package
+          zip -r package.zip package
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -46,4 +46,4 @@ jobs:
           app-name: 'webchat-mockbot2'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_774a167ab81e4bafb6507401dfdc8b26 }}
-          package: package
+          package: package.zip
