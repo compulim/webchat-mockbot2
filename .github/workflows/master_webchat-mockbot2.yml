@@ -33,7 +33,7 @@ jobs:
           mv node_modules package
           cd package
           ls -la
-          zip -r ../package.zip package
+          zip -r ../zipdeploy.zip .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -41,10 +41,16 @@ jobs:
           name: package
           path: '*.tgz'
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: 'zipdeploy.zip'
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v1
         with:
           app-name: 'webchat-mockbot2'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_774a167ab81e4bafb6507401dfdc8b26 }}
-          package: package.zip
+          package: zipdeploy.zip
