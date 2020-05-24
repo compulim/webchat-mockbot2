@@ -32,21 +32,16 @@ async function onTurnErrorHandler(context, error) {
   await context.sendActivity('To continue to run this bot, please fix the bot source code.');
 }
 
-export default async function createBotFrameworkAdapter(
-  {
-    APPSETTING_WEBSITE_SITE_NAME: websiteName,
+export default async function createBotFrameworkAdapter({
+  env: {
     BOT_OPENID_METADATA: openIdMetadata,
     CHANNEL_SERVICE: channelService,
     MicrosoftAppId: appID,
     MicrosoftAppPassword: appPassword
   } = process.env
-) {
+} = {}) {
   // See https://aka.ms/about-bot-adapter to learn more about how bots work.
   const adapter = new BotFrameworkAdapter({ appId: appID, appPassword, channelService, openIdMetadata });
-
-  // Enable Direct Line App Service Extension
-  // See https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-directline-extension-node-bot?view=azure-bot-service-4.0
-  adapter.useNamedPipe(context => bot.run(context), websiteName + '.directline');
 
   // Set the onTurnError for the singleton BotFrameworkAdapter.
   adapter.onTurnError = onTurnErrorHandler;

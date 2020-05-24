@@ -31,7 +31,11 @@ async function main() {
   // Create the main dialog.
   const bot = new EchoBot();
 
-  setupAPI(server, { adapter, bot, env: process.env });
+  setupAPI(server, { adapter, bot });
+
+  // Enable Direct Line App Service Extension
+  // See https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-directline-extension-node-bot?view=azure-bot-service-4.0
+  adapter.useNamedPipe(context => bot.run(context), `${process.env.APPSETTING_WEBSITE_SITE_NAME}.directline`);
 }
 
 main();

@@ -2,10 +2,9 @@ import fetch from 'node-fetch';
 
 import trustedOrigin from '../../../trustedOrigin';
 
-export default async function postTokenSpeechServices(
-  server,
-  { env: { SPEECH_SERVICES_REGION, SPEECH_SERVICES_SUBSCRIPTION_KEY } }
-) {
+export default async function postTokenSpeechServices(server) {
+  const { SPEECH_SERVICES_REGION, SPEECH_SERVICES_SUBSCRIPTION_KEY } = process.env;
+
   server.post('/api/token/speechservices', async (req, res) => {
     if (!SPEECH_SERVICES_REGION || !SPEECH_SERVICES_SUBSCRIPTION_KEY) {
       return res.send(403, 'Cognitive Services Speech Services authorization token is unavailable.');

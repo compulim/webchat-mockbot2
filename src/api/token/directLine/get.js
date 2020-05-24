@@ -3,12 +3,13 @@ import setImmediateAndInterval from '../../../utils/setImmediateAndInterval';
 
 const PREGENERATE_TOKEN_INTERVAL = 60000;
 
-export default async function getTokenDirectLine(server, { env: { DIRECT_LINE_SECRET: directLineSecret } }) {
+export default async function getTokenDirectLine(server) {
+  const { DIRECT_LINE_SECRET } = process.env;
   let pregeneratedTokens = [];
 
   setImmediateAndInterval(async () => {
     const now = Date.now();
-    const { conversationId, expires_in: expiresIn, token } = await generateDirectLineToken(directLineSecret);
+    const { conversationId, expires_in: expiresIn, token } = await generateDirectLineToken(DIRECT_LINE_SECRET);
     const expiresAt = now + expiresIn * 1000;
 
     pregeneratedTokens.push({

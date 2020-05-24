@@ -2,16 +2,15 @@ import generateDirectLineToken from '../../../utils/generateDirectLineToken';
 import renewDirectLineToken from '../../../utils/renewDirectLineToken';
 import trustedOrigin from '../../../trustedOrigin';
 
-export default function postTokenDirectLineASE(
-  server,
-  { env: { DIRECT_LINE_SECRET: directLineSecret, WEBSITE_HOSTNAME: webSiteHostName } }
-) {
-  if (!directLineSecret) {
+export default function postTokenDirectLineASE(server) {
+  const { DIRECT_LINE_SECRET, WEBSITE_HOSTNAME } = process.env;
+
+  if (!DIRECT_LINE_SECRET) {
     throw new TypeError('Environment variable "DIRECT_LINE_SECRET" must be set.');
   }
 
   server.post('/api/token/directlinease', async (req, res) => {
-    if (!webSiteHostName) {
+    if (!WEBSITE_HOSTNAME) {
       return res.send(500, 'only available on azure', { 'Access-Control-Allow-Origin': '*' });
     }
 
@@ -25,8 +24,8 @@ export default function postTokenDirectLineASE(
 
     try {
       const result = await (token
-        ? renewDirectLineToken(token, { domain: `https://${webSiteHostName}/.bot/` })
-        : generateDirectLineToken(directLineSecret, { domain: `https://${webSiteHostName}/.bot/` }));
+        ? renewDirectLineToken(token, { domain: `https://${WEBSITE_HOSTNAME}/.bot/` })
+        : generateDirectLineToken(DIRECT_LINE_SECRET, { domain: `https://${WEBSITE_HOSTNAME}/.bot/` }));
 
       res.sendRaw(JSON.stringify(result, null, 2), {
         'Access-Control-Allow-Origin': '*',
@@ -40,10 +39,10 @@ export default function postTokenDirectLineASE(
       console.log(`Refreshing Direct Line token for ${origin}`);
     } else {
       console.log(
-        `Requesting Direct Line token for ${origin} using secret "${directLineSecret.substr(
+        `Requesting Direct Line token for ${origin} using secret "${DIRECT_LINE_SECRET.substr(
           0,
           3
-        )}...${directLineSecret.substr(-3)}"`
+        )}...${DIRECT_LINE_SECRET.substr(-3)}"`
       );
     }
   });

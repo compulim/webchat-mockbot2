@@ -2,8 +2,10 @@ import generateDirectLineToken from '../../../utils/generateDirectLineToken';
 import renewDirectLineToken from '../../../utils/renewDirectLineToken';
 import trustedOrigin from '../../../trustedOrigin';
 
-export default function postTokenDirectLine(server, { env: { DIRECT_LINE_SECRET: directLineSecret } }) {
-  if (!directLineSecret) {
+export default function postTokenDirectLine(server) {
+  const { DIRECT_LINE_SECRET } = process.env;
+
+  if (!DIRECT_LINE_SECRET) {
     throw new TypeError('Environment variable "DIRECT_LINE_SECRET" must be set.');
   }
 
@@ -17,7 +19,7 @@ export default function postTokenDirectLine(server, { env: { DIRECT_LINE_SECRET:
     const { token } = req.query;
 
     try {
-      const result = await (token ? renewDirectLineToken(token) : generateDirectLineToken(directLineSecret));
+      const result = await (token ? renewDirectLineToken(token) : generateDirectLineToken(DIRECT_LINE_SECRET));
       const { conversationId, userId } = result;
 
       const message = `"conversationID" and "userID" is being deprecated, please use "conversationId" and "userId" instead.`;
@@ -46,10 +48,10 @@ export default function postTokenDirectLine(server, { env: { DIRECT_LINE_SECRET:
       console.log(`Refreshing Direct Line token for ${origin}`);
     } else {
       console.log(
-        `Requesting Direct Line token for ${origin} using secret "${directLineSecret.substr(
+        `Requesting Direct Line token for ${origin} using secret "${DIRECT_LINE_SECRET.substr(
           0,
           3
-        )}...${directLineSecret.substr(-3)}"`
+        )}...${DIRECT_LINE_SECRET.substr(-3)}"`
       );
     }
   });
