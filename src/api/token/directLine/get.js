@@ -23,32 +23,36 @@ export default async function getTokenDirectLine(server) {
   }, PREGENERATE_TOKEN_INTERVAL);
 
   server.get('/api/token/directline', async (_, res) => {
-    res.set('Content-Type', 'text/plain');
-    res.set('Cache-Control', 'no-cache');
+    try {
+      res.set('Content-Type', 'text/plain');
+      res.set('Cache-Control', 'no-cache');
 
-    res.sendRaw(
-      JSON.stringify(
+      res.sendRaw(
+        JSON.stringify(
+          {
+            tokens: pregeneratedTokens.map(token => {
+              const message1 = `This token will expires at ${new Date(token.expiresAt).toISOString()}`;
+              const message2 =
+                Date.now() > token.expiresAt
+                  ? 'And is expired.'
+                  : `Or in about ${~~((token.expiresAt - Date.now()) / 1000)} seconds`;
+              const separator = new Array(Math.max(message1.length, message2.length)).fill('-').join('');
+
+              return {
+                human: [separator, message1, message2, separator],
+                ...token
+              };
+            })
+          },
+          null,
+          2
+        ),
         {
-          tokens: pregeneratedTokens.map(token => {
-            const message1 = `This token will expires at ${new Date(token.expiresAt).toISOString()}`;
-            const message2 =
-              Date.now() > token.expiresAt
-                ? 'And is expired.'
-                : `Or in about ${~~((token.expiresAt - Date.now()) / 1000)} seconds`;
-            const separator = new Array(Math.max(message1.length, message2.length)).fill('-').join('');
-
-            return {
-              human: [separator, message1, message2, separator],
-              ...token
-            };
-          })
-        },
-        null,
-        2
-      ),
-      {
-        'Content-Type': 'application/json'
-      }
-    );
+          'Content-Type': 'application/json'
+        }
+      );
+    } catch (err) {
+      res.send(500, { message: err.message, stack: err.stack }, { 'Access-Control-Allow-Origin': '*' });
+    }
   });
 }
