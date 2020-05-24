@@ -2,8 +2,6 @@ import generateDirectLineToken from '../../../utils/generateDirectLineToken';
 import renewDirectLineToken from '../../../utils/renewDirectLineToken';
 import trustedOrigin from '../../../trustedOrigin';
 
-const ALLOW_ALL_HEADER = { 'Access-Control-Allow-Origin': '*' };
-
 export default function postTokenDirectLine(server, { env: { DIRECT_LINE_SECRET: directLineSecret } }) {
   if (!directLineSecret) {
     throw new TypeError('Environment variable "DIRECT_LINE_SECRET" must be set.');
@@ -13,7 +11,7 @@ export default function postTokenDirectLine(server, { env: { DIRECT_LINE_SECRET:
     const origin = req.header('origin');
 
     if (!trustedOrigin(origin)) {
-      return res.send(403, 'not trusted origin');
+      return res.send(403, 'not trusted origin', { 'Access-Control-Allow-Origin': origin });
     }
 
     const { token } = req.query;
@@ -38,10 +36,10 @@ export default function postTokenDirectLine(server, { env: { DIRECT_LINE_SECRET:
           null,
           2
         ),
-        { ...ALLOW_ALL_HEADER, 'Content-Type': 'application/json' }
+        { 'Access-Control-Allow-Origin': origin, 'Content-Type': 'application/json' }
       );
     } catch (err) {
-      res.send(500, err.message, ALLOW_ALL_HEADER);
+      res.send(500, err.message, { 'Access-Control-Allow-Origin': origin });
     }
 
     if (token) {

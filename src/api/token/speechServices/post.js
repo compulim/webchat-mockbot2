@@ -21,7 +21,7 @@ export default async function postTokenSpeechServices(
     const origin = req.header('origin');
 
     if (!trustedOrigin(origin)) {
-      return res.send(403, 'not trusted origin');
+      return res.send(403, 'not trusted origin', { 'Access-Control-Allow-Origin': origin });
     }
 
     const tokenRes = await fetch(`https://${SPEECH_SERVICES_REGION}.api.cognitive.microsoft.com/sts/v1.0/issueToken`, {
@@ -30,9 +30,7 @@ export default async function postTokenSpeechServices(
     });
 
     if (!tokenRes.ok) {
-      return res.send(500, {
-        'Access-Control-Allow-Origin': '*'
-      });
+      return res.send(500, { 'Access-Control-Allow-Origin': origin });
     }
 
     const authorizationToken = await tokenRes.text();
@@ -49,7 +47,7 @@ export default async function postTokenSpeechServices(
         2
       ),
       {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': origin,
         'Content-Type': 'application/json'
       }
     );
