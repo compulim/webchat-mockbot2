@@ -15,19 +15,23 @@ import createBotFrameworkAdapter from './createBotFrameworkAdapter';
 import EchoBot from './bot';
 import setupAPI from './api/index';
 
-// Create HTTP server
-const server = createServer();
+async function main() {
+  // Create HTTP server
+  const server = createServer();
 
-server.listen(process.env.port || process.env.PORT || 3978, () => {
-  console.log(`\n${server.name} listening to ${server.url}`);
-  console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
-  console.log('\nTo talk to your bot, open the emulator select "Open Bot"');
-});
+  server.listen(process.env.port || process.env.PORT || 3978, () => {
+    console.log(`\n${server.name} listening to ${server.url}`);
+    console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
+    console.log('\nTo talk to your bot, open the emulator select "Open Bot"');
+  });
 
-// Create adapter.
-const adapter = createBotFrameworkAdapter();
+  // Create adapter.
+  const adapter = await createBotFrameworkAdapter();
 
-// Create the main dialog.
-const bot = new EchoBot();
+  // Create the main dialog.
+  const bot = new EchoBot();
 
-setupAPI(server, { adapter, bot, env: process.env });
+  setupAPI(server, { adapter, bot, env: process.env });
+}
+
+main();
