@@ -4,6 +4,11 @@
   "description": "MockBot for testing Web Chat",
   "author": "William Wong <compulim@hotmail.com>",
   "license": "MIT",
+  "files": [
+    "iisnode.yml",
+    "lib/**/*",
+    "web.config"
+  ],
   "main": "lib/index.js",
   "scripts": {
     "build": "npm run build:babel",
@@ -13,7 +18,7 @@
     "start:babel": "npm run build:babel -- --skip-initial-build --verbose --watch",
     "start:server": "node-dev --no-deps --no-notify --respawn .",
     "lint": "eslint .",
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Warning: no test specified\""
   },
   "repository": {
     "type": "git",
