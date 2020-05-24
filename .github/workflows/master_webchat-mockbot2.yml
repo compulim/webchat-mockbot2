@@ -58,5 +58,5 @@ jobs:
 
       - name: 'Ping deployment'
         run: |
-          curl ${{ steps.deploy.outputs.webapp-url }}/health.txt
-          curl ${{ steps.deploy.outputs.webapp-url }}/ready.txt
+          curl -s -${{ steps.deploy.outputs.webapp-url }}/health.txt
+          curl -s -${{ steps.deploy.outputs.webapp-url }}/ready.txt
