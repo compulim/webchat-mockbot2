@@ -37,12 +37,12 @@ export default async function createBotFrameworkAdapter(
     APPSETTING_WEBSITE_SITE_NAME: websiteName,
     BOT_OPENID_METADATA: openIdMetadata,
     CHANNEL_SERVICE: channelService,
-    MICROSOFT_APP_ID: appId,
-    MICROSOFT_APP_PASSWORD: appPassword
+    MicrosoftAppId: appID,
+    MicrosoftAppPassword: appPassword
   } = process.env
 ) {
   // See https://aka.ms/about-bot-adapter to learn more about how bots work.
-  const adapter = new BotFrameworkAdapter({ appId, appPassword, channelService, openIdMetadata });
+  const adapter = new BotFrameworkAdapter({ appId: appID, appPassword, channelService, openIdMetadata });
 
   // Enable Direct Line App Service Extension
   // See https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-directline-extension-node-bot?view=azure-bot-service-4.0
