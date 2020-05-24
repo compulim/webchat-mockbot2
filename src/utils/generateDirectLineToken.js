@@ -14,7 +14,11 @@ export default async function (
     // body: JSON.stringify({ User: { Id: userId } }),
     body: JSON.stringify({
       user: { id: userId },
-      trustedOrigins: ['compulim.github.io', 'microsoft.github.io', 'webchat-mockbot2.azurewebsites.net']
+      trustedOrigins: [
+        'https://compulim.github.io/',
+        'https://microsoft.github.io/',
+        'https://webchat-mockbot2.azurewebsites.net/'
+      ]
     }),
     headers: {
       authorization: `Bearer ${directLineSecret}`,
@@ -37,5 +41,5 @@ export default async function (
 
   const { conversationId, ...otherJSON } = json;
 
-  return { ...otherJSON, conversationID: conversationId, conversationId, userID: userId, userId: userId };
+  return { ...otherJSON, conversationId, userId: userId };
 }

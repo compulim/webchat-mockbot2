@@ -19,11 +19,21 @@ export default function postDirectLineToken(server, { env: { DIRECT_LINE_SECRET:
     const { token } = req.query;
 
     try {
-      if (token) {
-        res.send(await renewDirectLineToken(token), ALLOW_ALL_HEADER);
-      } else {
-        res.send(await generateDirectLineToken(directLineSecret), ALLOW_ALL_HEADER);
-      }
+      const result = await (token ? renewDirectLineToken(token) : generateDirectLineToken(directLineSecret));
+      const { conversationId, userId } = result;
+
+      const message = `"conversationID" and "userID" is being deprecated, please use "conversationId" and "userId" instead.`;
+      const separator = new Array(message.length).fill('-').join('');
+
+      res.sendRaw(
+        JSON.stringify({
+          ...result,
+          conversationId,
+          userId,
+          human: [separator, message, separator]
+        }),
+        { ...ALLOW_ALL_HEADER, 'Content-Type': 'application/json' }
+      );
     } catch (err) {
       res.send(500, err.message, ALLOW_ALL_HEADER);
     }
