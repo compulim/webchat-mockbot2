@@ -31,8 +31,9 @@ jobs:
           npm pack
           tar xvf *.tgz
           mv node_modules package
-          ls -la package
-          zip -r package.zip package
+          cd package
+          ls -la
+          zip -r ../package.zip package
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
