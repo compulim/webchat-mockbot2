@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     # runs-on: windows-latest
 
@@ -32,22 +32,13 @@ jobs:
           npm pack
           tar xvf botframework-webchat2-0.0.0-0.tgz
           mv node_modules package
+          cd package
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: package
-          path: package
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: 'Download artifact "package"'
-        uses: actions/download-artifact@v2
-        with:
-          name: package
+          path: *.tgz
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v1
@@ -55,4 +46,4 @@ jobs:
           app-name: 'webchat-mockbot2'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_774a167ab81e4bafb6507401dfdc8b26 }}
-          package: .
+          package: package/
