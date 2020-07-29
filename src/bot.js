@@ -19,10 +19,13 @@ export default class EchoBot extends ActivityHandler {
     this.onMembersAdded(async (context, next) => {
       const membersAdded = context.activity.membersAdded;
       const welcomeText = 'Hello and welcome!';
+      const welcomeTextInChinese = '您好，欢迎！';
 
       for (let cnt = 0; cnt < membersAdded.length; ++cnt) {
-        if (membersAdded[cnt].id !== context.activity.recipient.id) {
-          await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));
+        if (context.activity.locale === 'zh-CN' || context.activity.locale === 'zh-Hans') {
+          await context.sendActivity(MessageFactory.text(welcomeTextInChinese, welcomeTextInChinese));
+        } else {
+            await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));
         }
       }
 
