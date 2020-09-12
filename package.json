@@ -28,7 +28,7 @@
     "botbuilder": "4.10.0",
     "dotenv": "8.2.0",
     "math-random": "2.0.1",
-    "node-fetch": "2.6.0",
+    "node-fetch": "2.6.1",
     "pretty-ms": "7.0.0",
     "restify": "8.5.1"
   },
