@@ -5,7 +5,7 @@ export default function trustedOrigin(origin) {
     /^https?:\/\/192\.168\.(0|1)\.\d{1,3}([\/:]|$)/.test(origin) ||
     origin === 'null' || // This is for file://index.html
     // This is for Docker tests, dotless domain
-    /^https?:\/\/[\d\w]+([\/:]|$)/.test(origin) ||
+    /^https?:\/\/[\d\w-]+([\/:]|$)/.test(origin) ||
     /^https?:\/\/[\d\w]+\.ngrok\.io(\/|$)/.test(origin) ||
     /^https?:\/\/webchat-playground\.azurewebsites\.net(\/|$)/.test(origin) ||
     /^https?:\/\/([\d\w]+\.)+botframework\.com(\/|$)/.test(origin) ||
