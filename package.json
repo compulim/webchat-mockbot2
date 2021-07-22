@@ -25,7 +25,7 @@
     "url": "https://github.com"
   },
   "dependencies": {
-    "botbuilder": "4.14.0",
+    "botbuilder": "4.14.1",
     "dotenv": "10.0.0",
     "math-random": "2.0.1",
     "node-fetch": "2.6.1",
@@ -33,12 +33,11 @@
     "restify": "8.5.1"
   },
   "devDependencies": {
-    "@babel/cli": "7.14.5",
-    "@babel/core": "7.14.6",
-    "@babel/plugin-proposal-object-rest-spread": "7.14.7",
-    "@babel/preset-env": "7.14.7",
+    "@babel/cli": "7.14.8",
+    "@babel/core": "7.14.8",
+    "@babel/preset-env": "7.14.8",
     "concurrently": "6.2.0",
-    "eslint": "7.30.0",
+    "eslint": "7.31.0",
     "eslint-config-standard": "16.0.3",
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-node": "11.1.0",
