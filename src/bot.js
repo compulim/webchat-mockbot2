@@ -12,6 +12,23 @@ export default class EchoBot extends ActivityHandler {
       const replyText = `Echo: ${context.activity.text}`;
 
       await context.sendActivity(MessageFactory.text(replyText, replyText));
+
+      // Echo back every activity.
+      const { attachments } = context.activity;
+
+      if (attachments && attachments.length) {
+        await Promise.all(
+          attachments.map((attachment, index) =>
+            context.sendActivity(
+              MessageFactory.attachment(
+                attachment,
+                `Attachment ${index + 1}: \`${attachment.name}\` of type \`${attachment.contentType}\``
+              )
+            )
+          )
+        );
+      }
+
       // By calling next() you ensure that the next BotHandler is run.
       await next();
     });
@@ -24,9 +41,9 @@ export default class EchoBot extends ActivityHandler {
       for (let cnt = 0; cnt < membersAdded.length; ++cnt) {
         if (membersAdded[cnt].id !== context.activity.recipient.id) {
           if (context.activity.locale === 'zh-CN' || context.activity.locale === 'zh-Hans') {
-              await context.sendActivity(MessageFactory.text(welcomeTextInChinese, welcomeTextInChinese));
+            await context.sendActivity(MessageFactory.text(welcomeTextInChinese, welcomeTextInChinese));
           } else {
-              await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));
+            await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));
           }
         }
       }
