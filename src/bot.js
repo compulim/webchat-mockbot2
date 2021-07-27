@@ -9,15 +9,17 @@ export default class EchoBot extends ActivityHandler {
 
     // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
     this.onMessage(async (context, next) => {
-      const replyText = `Echo: ${context.activity.text || ''}`;
+      const replyText = `Echo: ${context.activity.text || ''}\n\n(With ${
+        (context.activity.attachments || []).length
+      } attachments)`;
 
-      const activities = [MessageFactory.text(replyText, replyText)];
+      await context.sendActivity(MessageFactory.text(replyText, replyText));
 
       // Echo back every activity.
       const { attachments } = context.activity;
 
       if (attachments && attachments.length) {
-        activities.push(
+        await Promise.all(
           ...attachments.map((attachment, index) =>
             context.sendActivity(
               MessageFactory.attachment(
@@ -28,8 +30,6 @@ export default class EchoBot extends ActivityHandler {
           )
         );
       }
-
-      await context.sendActivities(activities);
 
       // By calling next() you ensure that the next BotHandler is run.
       await next();
