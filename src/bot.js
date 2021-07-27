@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-const { ActivityHandler, MessageFactory } = require('botbuilder');
+const { ActivityHandler, MessageFactory, TurnContextStateCollection } = require('botbuilder');
 
 export default class EchoBot extends ActivityHandler {
   constructor() {
@@ -11,25 +11,25 @@ export default class EchoBot extends ActivityHandler {
     this.onMessage(async (context, next) => {
       const replyText = `Echo: ${context.activity.text || ''}\n\n(With ${
         (context.activity.attachments || []).length
-      } attachments)`;
+      } attachments, \`${typeof context.activity.attachments}\`)`;
 
-      await context.sendActivity(MessageFactory.text(replyText, replyText));
+      const activities = [MessageFactory.text(replyText, replyText)];
 
       // Echo back every activity.
       const { attachments } = context.activity;
 
       if (attachments && attachments.length) {
-        await Promise.all(
+        activities.push(
           ...attachments.map((attachment, index) =>
-            context.sendActivity(
-              MessageFactory.attachment(
-                attachment,
-                `Attachment ${index + 1}: \`${attachment.name}\` of type \`${attachment.contentType}\``
-              )
+            MessageFactory.attachment(
+              attachment,
+              `Attachment ${index + 1}: \`${attachment.name}\` of type \`${attachment.contentType}\``
             )
           )
         );
       }
+
+      await context.sendActivities(activities);
 
       // By calling next() you ensure that the next BotHandler is run.
       await next();
