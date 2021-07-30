@@ -9,9 +9,7 @@ export default class EchoBot extends ActivityHandler {
 
     // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
     this.onMessage(async (context, next) => {
-      const replyText = `Echo: ${context.activity.text || ''}\n\n(With ${
-        (context.activity.attachments || []).length
-      } attachments, \`${typeof context.activity.attachments}\`)`;
+      const replyText = `Echo: ${context.activity.text || ''}`;
 
       const activities = [MessageFactory.text(replyText, replyText)];
 
