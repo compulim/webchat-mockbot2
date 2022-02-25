@@ -40,10 +40,11 @@ Set the following environment variables.
 
 | Name | Description |
 | - | - |
-| DIRECT_LINE_SECRET | Direct Line channel secret, used to generate the token for public users |
-| DirectLineExtensionKey | Direct Line ASE channel secret, for connecting DL ASE |
-| MicrosoftAppId | Bot application ID |
-| MicrosoftAppPassword | Bot application password |
+| `DIRECT_LINE_SECRET` | Direct Line channel secret, used to generate the token for public users |
+| `DirectLineExtensionKey` | Direct Line ASE channel secret, for connecting DL ASE |
+| `MicrosoftAppId` | Bot application ID |
+| `MicrosoftAppPassword` | Bot application password |
+| `WEBSITE_RUN_FROM_PACKAGE` | Set to `1` to use ZIP file directly from ZipDeploy |
 
 Enable Web Socket. And optionally disable ARR.
 
