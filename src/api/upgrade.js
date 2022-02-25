@@ -1,3 +1,5 @@
+import { BotFrameworkAdapter } from 'botbuilder';
+
 export default async function upgrade(server, { bot }) {
   // Listen for Upgrade requests for Streaming.
   server.on('upgrade', (req, socket, head) => {

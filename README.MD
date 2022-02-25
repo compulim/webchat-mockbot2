@@ -34,6 +34,19 @@ This bot has been created using [Bot Framework](https://dev.botframework.com), i
 
 To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](https://aka.ms/azuredeployment) for a complete list of deployment instructions.
 
+## Configuring on Azure
+
+Set the following environment variables.
+
+| Name | Description |
+| - | - |
+| DIRECT_LINE_SECRET | Direct Line channel secret, used to generate the token for public users |
+| DirectLineExtensionKey | Direct Line ASE channel secret, for connecting DL ASE |
+| MicrosoftAppId | Bot application ID |
+| MicrosoftAppPassword | Bot application password |
+
+Enable Web Socket. And optionally disable ARR.
+
 ## Further reading
 - [Bot Framework Documentation](https://docs.botframework.com)
 - [Bot Basics](https://docs.microsoft.com/azure/bot-service/bot-builder-basics?view=azure-bot-service-4.0)
